@@ -639,78 +639,6 @@ the algorithms can scale to large number of robots. Finally, simulations studyin
 The following figures show an average of the results obtained in the
 50 simulation runs of each algorithm.
 
-At the beginning of the exploration process, DORA-Explorer and the baselines
-perform similarly in terms of number of cells explored as shown in
-Fig. \ref{results:explored10}, \ref{results:explored15} and
-\ref{results:explored20}. As time progresses in the same figures, FBE
-achieves a slightly higher exploration coverage than DORA-Explorer, but this
-gap in performance decreases as the number of robots increases. This
-is an expected result, because DORA-Explorer's main goal is not to achieve
-maximal coverage at all costs, unlike FBE. Both FBE and DORA-Explorer clearly
-outperform the random walk algorithm. The other trend is that adding
-more robots to the swarm results in faster exploration, with a higher
-number of cells being explored for all three algorithms after 300
-steps. This shows that DORA-Explorer scales well to large number of robots, and
-even gains in performance when swarm size increases, which is in line
-with the benefits associated with swarm algorithms.
-
-In terms of avoiding failures, DORA-Explorer unsurprisingly outperforms both
-FBE and the random walk, as it is its main purpose. This is shown in
-Fig. \ref{results:failures10}, \ref{results:failures15} and
-\ref{results:failures20}, where DORA-Explorer exhibits a higher level of active
-robots over time, with this difference only increasing with larger
-swarm sizes. For N = \{10, 15, 20\} robots, there are rarely any
-survivors for FBE, and random walks perform only slightly better. In
-contrast, DORA-Explorer keeps most robots alive, achieving its objective.
-
-The results from Fig. \ref{results:communicationCosts} show the amount
-of data transferred by individual agents at each time step by both
-algorithms. We excluded the random walk algorithm from this figure as
-it does not require any coordination or communication between its
-agents. DORA-Explorer transmits more data than FBE, which was expected because
-the former shares information through two DBMs, while the latter uses
-only one. In section \ref{subsec:scalability}, we predicted that the
-amount of data transmitted at each time step would only depend on the
-size of the neighborhood used, and this is confirmed by
-Fig. \ref{results:communicationCosts}, where it remains roughly
-constant for different number of agents. The small increase in data
-transmission with increasing number of robots can be attributed to
-packet collision. Overall, the amount of required data transfer is
-small in comparison with the capacities of the KheperaIV robots which
-communicate with the 802.11 b/g WiFi protocol.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.95\columnwidth]{images/communication.png}
-    \caption{Communication costs for DORA-Explorer and FBE}
-    \label{results:communicationCosts}
-\end{figure}
-
-Results from Fig. \ref{results:parameters} show the performance of DORA-Explorer with varying ratios of risk gain $\alpha$ to exploration gain $\beta$. The experiments were carried with 10 robots. Results show that the number of remaining active robots at the end of the simulation only increases with a higher ratio. This is the expected behaviour as increasing the ratio corresponds to giving more importance to the risk avoidance control law from (\ref{eq:movement}). As for the number of cells explored, the relationship is not monotonic. In our experimental setup, a ratio $\alpha / \beta = 2$ provided the best result in terms of number of cells explored. For lower ratios, the robotic team is increasingly impacted by failures which in turns worsen the exploration performance. For higher ratios, the robot are too careful and don't explore as much the environment. Choosing an adequate risk to exploration ratio is therefore important and its value will depend of the specific scenario in which the algorithm is used. 
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.95\columnwidth]{images/parameters.png}
-    \caption{Performance of DORA-Explorer with varying ratios of risk gain ($\alpha$) to exploration gain ($\beta$)}
-    \label{results:parameters}
-\end{figure}
-
-Fig. \ref{results:belief} shows the DBMs obtained at the end of an
-arbitrarily selected simulation where N = 20 for each algorithm.  In
-other words, it represents which cells were explored by each algorithm
-and the sensed radiation intensity associated with them for one specific run. The random
-walk covered much fewer cells than DORA-Explorer and FBE, which both covered
-roughly the same areas of the map, with the same sections remaining
-unexplored. However, these areas remained unvisited for different
-reasons. For FBE, the parts of the environment close to the radiation
-sources remained uncovered because its agents failed when approaching
-them. In contrast, DORA-Explorer did not explore these cells because it
-\textit{avoided them}. Again, DORA-Explorer achieves very similar coverage than
-FBE but does so with less robot failures. In this particular
-simulation, DORA-Explorer finished with 18 active robots, random walk finished
-with 7, and FBE with none.
-
-
 \begin{figure*}
     \centering
     \begin{subfigure}{0.32\textwidth}
@@ -772,6 +700,82 @@ with 7, and FBE with none.
     \label{results:belief}
 \end{figure*}
 
+At the beginning of the exploration process, DORA-Explorer and the baselines
+perform similarly in terms of number of cells explored as shown in
+Fig. \ref{results:explored10}, \ref{results:explored15} and
+\ref{results:explored20}. As time progresses in the same figures, FBE
+achieves a slightly higher exploration coverage than DORA-Explorer, but this
+gap in performance decreases as the number of robots increases. This
+is an expected result, because DORA-Explorer's main goal is not to achieve
+maximal coverage at all costs, unlike FBE. Both FBE and DORA-Explorer clearly
+outperform the random walk algorithm. The other trend is that adding
+more robots to the swarm results in faster exploration, with a higher
+number of cells being explored for all three algorithms after 300
+steps. This shows that DORA-Explorer scales well to large number of robots, and
+even gains in performance when swarm size increases, which is in line
+with the benefits associated with swarm algorithms.
+
+In terms of avoiding failures, DORA-Explorer unsurprisingly outperforms both
+FBE and the random walk, as it is its main purpose. This is shown in
+Fig. \ref{results:failures10}, \ref{results:failures15} and
+\ref{results:failures20}, where DORA-Explorer exhibits a higher level of active
+robots over time, with this difference only increasing with larger
+swarm sizes. For N = \{10, 15, 20\} robots, there are rarely any
+survivors for FBE, and random walks perform only slightly better. In
+contrast, DORA-Explorer keeps most robots alive, achieving its objective.
+
+Fig. \ref{results:belief} shows the DBMs obtained at the end of an
+arbitrarily selected simulation where N = 20 for each algorithm.  In
+other words, it represents which cells were explored by each algorithm
+and the sensed radiation intensity associated with them for one specific run. The random
+walk covered much fewer cells than DORA-Explorer and FBE, which both covered
+roughly the same areas of the map, with the same sections remaining
+unexplored. However, these areas remained unvisited for different
+reasons. For FBE, the parts of the environment close to the radiation
+sources remained uncovered because its agents failed when approaching
+them. In contrast, DORA-Explorer did not explore these cells because it
+\textit{avoided them}. Again, DORA-Explorer achieves very similar coverage than
+FBE but does so with less robot failures. In this particular
+simulation, DORA-Explorer finished with 18 active robots, random walk finished
+with 7, and FBE with none.
+
+
+The results from Fig. \ref{results:communicationCosts} show the amount
+of data transferred by individual agents at each time step by both
+algorithms. We excluded the random walk algorithm from this figure as
+it does not require any coordination or communication between its
+agents. DORA-Explorer transmits more data than FBE, which was expected because
+the former shares information through two DBMs, while the latter uses
+only one. In section \ref{subsec:scalability}, we predicted that the
+amount of data transmitted at each time step would only depend on the
+size of the neighborhood used, and this is confirmed by
+Fig. \ref{results:communicationCosts}, where it remains roughly
+constant for different number of agents. The small increase in data
+transmission with increasing number of robots can be attributed to
+packet collision. Overall, the amount of required data transfer is
+small in comparison with the capacities of the KheperaIV robots which
+communicate with the 802.11 b/g WiFi protocol.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{images/communication.png}
+    \caption{Communication costs for DORA-Explorer and FBE}
+    \label{results:communicationCosts}
+\end{figure}
+
+Results from Fig. \ref{results:parameters} show the performance of DORA-Explorer with varying ratios of risk gain $\alpha$ to exploration gain $\beta$. The experiments were carried with 10 robots. Results show that the number of remaining active robots at the end of the simulation only increases with a higher ratio. This is the expected behaviour as increasing the ratio corresponds to giving more importance to the risk avoidance control law from (\ref{eq:movement}). As for the number of cells explored, the relationship is not monotonic. In our experimental setup, a ratio $\alpha / \beta = 2$ provided the best result in terms of number of cells explored. For lower ratios, the robotic team is increasingly impacted by failures which in turns worsen the exploration performance. For higher ratios, the robot are too careful and don't explore as much the environment. Choosing an adequate risk to exploration ratio is therefore important and its value will depend of the specific scenario in which the algorithm is used. 
+
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{images/parameters.png}
+    \caption{Performance of DORA-Explorer with varying ratios of risk gain ($\alpha$) to exploration gain ($\beta$)}
+    \label{results:parameters}
+\end{figure}
+
+
+
 
 \section{Physical experiments}
 \subsection{Experimental setup}
@@ -782,7 +786,7 @@ Fig. \ref{arena}. We only used one radiation source because of the small size of
 
 \begin{figure}[h]
     \centering
-    \captionsetup{belowskip=-20pt}
+    \captionsetup{belowskip=0pt}
     \includegraphics[width=0.65\columnwidth]{images/arena.jpeg}
     \caption{Experiments on three physical KheperaIV robots. The red canister represents the point radiation source in the environment.}
     \label{arena}
